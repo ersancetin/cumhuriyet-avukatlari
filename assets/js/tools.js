@@ -451,7 +451,7 @@
         CA.showResult(
           files.length + ' PDF tek dosyada birleştirildi',
           out.getPageCount() + ' sayfa · ' + CA.formatBytes(blob.size),
-          [{ label: 'PDF\'i İndir', blob: blob, name: 'birlestirilmis.pdf' }]
+          [{ label: 'PDF\'i İndir', blob: blob, name: baseName(files[0].name) + '_birlestirilmis.pdf' }]
         );
       });
     }));
@@ -561,7 +561,7 @@
       }).then(function (bytes) {
         var blob = new Blob([bytes], { type: 'application/pdf' });
         CA.hideProgress();
-        var name = files.length === 1 ? baseName(files[0].name) + '.pdf' : 'gorseller.pdf';
+        var name = baseName(files[0].name) + '.pdf';
         CA.showResult(
           files.length + ' görsel PDF\'e dönüştürüldü',
           out.getPageCount() + ' sayfa · ' + CA.formatBytes(blob.size),
@@ -635,7 +635,7 @@
       }).then(function (bytes) {
         var blob = new Blob([bytes], { type: 'application/pdf' });
         CA.hideProgress();
-        var name = files.length === 1 ? baseName(files[0].name) + '.pdf' : 'taramalar.pdf';
+        var name = baseName(files[0].name) + '.pdf';
         CA.showResult(
           'TIFF dosyaları PDF\'e dönüştürüldü',
           out.getPageCount() + ' sayfa · ' + CA.formatBytes(blob.size),
