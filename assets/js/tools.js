@@ -87,6 +87,27 @@
     });
   }
 
+  /* ---- döndürülmüş (/Rotate'li) sayfalara doğru damgalama ----
+     Taranmış PDF'lerde sayfa içeriği çoğu zaman /Rotate ile çevrilir; metni
+     ham koordinatlara basmak numara/filigranı yanlış kenara düşürür. Bu
+     yardımcılar "ekranda görünen" koordinatı sayfa koordinatına çevirir. */
+
+  function visualBox(page) {
+    var rot = ((page.getRotation().angle % 360) + 360) % 360;
+    var w = page.getWidth(), h = page.getHeight();
+    var swap = (rot === 90 || rot === 270);
+    return { rot: rot, w: w, h: h, vw: swap ? h : w, vh: swap ? w : h };
+  }
+
+  function toPagePoint(box, vx, vy) {
+    switch (box.rot) {
+      case 90: return { x: box.w - vy, y: vx };
+      case 180: return { x: box.w - vx, y: box.h - vy };
+      case 270: return { x: vy, y: box.h - vx };
+      default: return { x: vx, y: vy };
+    }
+  }
+
   /* ---- önizleme üreticileri (küçük resimler) ---- */
 
   var thumbCache = new WeakMap();
@@ -149,6 +170,8 @@
         var imgData = sctx.createImageData(w, h);
         imgData.data.set(rgba);
         sctx.putImageData(imgData, 0, 0);
+        src = orientCanvas(src, ifds[0].t274 ? ifds[0].t274[0] : 1);
+        w = src.width; h = src.height;
         var scale = Math.min(1, 200 / w);
         var out = document.createElement('canvas');
         out.width = Math.max(1, Math.round(w * scale));
@@ -220,9 +243,53 @@
     return state;
   }
 
-  /* görseli canvas üzerinden PNG/JPEG byte'larına çevirir (WebP ve sorunlu JPG'ler için) */
+  /* JPEG'in EXIF yön etiketini okur (1 = düz). Telefon fotoğrafları çoğunlukla
+     pikselleri döndürülmemiş kaydedip yönü bu etiketle bildirir. */
+  function jpegOrientation(buf) {
+    try {
+      var view = new DataView(buf);
+      if (view.getUint16(0) !== 0xFFD8) return 1;
+      var offset = 2, length = view.byteLength;
+      while (offset < length - 4) {
+        var marker = view.getUint16(offset);
+        offset += 2;
+        if (marker === 0xFFE1) {
+          if (view.getUint32(offset + 2) !== 0x45786966) return 1; /* "Exif" */
+          var tiff = offset + 8;
+          var little = view.getUint16(tiff) === 0x4949;
+          var get16 = function (o) { return view.getUint16(o, little); };
+          var get32 = function (o) { return view.getUint32(o, little); };
+          var ifdOff = get32(tiff + 4);
+          if (tiff + ifdOff + 2 > length) return 1;
+          var entries = get16(tiff + ifdOff);
+          for (var i = 0; i < entries; i++) {
+            var e = tiff + ifdOff + 2 + i * 12;
+            if (e + 10 > length) return 1;
+            if (get16(e) === 0x0112) return get16(e + 8) || 1;
+          }
+          return 1;
+        }
+        if ((marker & 0xFF00) !== 0xFF00) return 1;
+        offset += view.getUint16(offset);
+      }
+      return 1;
+    } catch (e) {
+      return 1;
+    }
+  }
+
+  /* görseli canvas üzerinden PNG/JPEG byte'larına çevirir; EXIF yönünü uygular */
   function fileToCanvas(file) {
-    return createImageBitmap(file).then(function (bmp) {
+    var bmpPromise;
+    try {
+      bmpPromise = createImageBitmap(file, { imageOrientation: 'from-image' });
+    } catch (e) {
+      bmpPromise = createImageBitmap(file);
+    }
+    return bmpPromise.catch(function () {
+      /* bazı tarayıcılar seçenek nesnesini desteklemez */
+      return createImageBitmap(file);
+    }).then(function (bmp) {
       var canvas = document.createElement('canvas');
       canvas.width = bmp.width;
       canvas.height = bmp.height;
@@ -237,6 +304,23 @@
     });
   }
 
+  /* TIFF yön etiketi (t274) için canvas'ı döndürür */
+  function orientCanvas(canvas, o) {
+    if (!o || o === 1) return canvas;
+    var w = canvas.width, h = canvas.height;
+    var out = document.createElement('canvas');
+    var swap = (o === 6 || o === 8);
+    out.width = swap ? h : w;
+    out.height = swap ? w : h;
+    var ctx = out.getContext('2d');
+    if (o === 3) { ctx.translate(w, h); ctx.rotate(Math.PI); }
+    else if (o === 6) { ctx.translate(h, 0); ctx.rotate(Math.PI / 2); }
+    else if (o === 8) { ctx.translate(0, w); ctx.rotate(-Math.PI / 2); }
+    else { return canvas; }
+    ctx.drawImage(canvas, 0, 0);
+    return out;
+  }
+
   function addImagePage(pdfDoc, image, pageMode, margin) {
     var iw = image.width, ih = image.height;
     var pw, ph;
@@ -244,6 +328,9 @@
       /* 96dpi piksel -> punto; sayfa görsel boyutunda */
       pw = iw * 72 / 96 + margin * 2;
       ph = ih * 72 / 96 + margin * 2;
+    } else if (pageMode === 'a4auto') {
+      /* sayfa yönü görselin yönüne uyar */
+      if (iw > ih) { pw = A4.h; ph = A4.w; } else { pw = A4.w; ph = A4.h; }
     } else if (pageMode === 'a4l') {
       pw = A4.h; ph = A4.w;
     } else {
@@ -265,6 +352,14 @@
     var name = file.name.toLowerCase();
     return CA.readFile(file).then(function (buf) {
       if (/\.(jpg|jpeg)$/.test(name)) {
+        /* EXIF yön etiketi taşıyan fotoğraflar canvas üzerinden düzeltilerek
+           gömülür; aksi hâlde PDF'te yan/ters görünürler */
+        if (jpegOrientation(buf) !== 1) {
+          return fileToCanvas(file)
+            .then(function (c) { return canvasToBlob(c, 'image/jpeg', 0.92); })
+            .then(function (b) { return b.arrayBuffer(); })
+            .then(function (ab) { return pdfDoc.embedJpg(ab); });
+        }
         return pdfDoc.embedJpg(buf).catch(function () {
           /* CMYK/progresif JPG: canvas üzerinden yeniden kodla */
           return fileToCanvas(file)
@@ -412,7 +507,7 @@
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var files = state.require(1, 'Lütfen en az bir görsel seçin (JPG, PNG veya WebP).');
-      var pageMode = CA.choiceValue('opt-pagesize') || 'a4p';
+      var pageMode = CA.choiceValue('opt-pagesize') || 'a4auto';
       var margin = parseFloat(CA.choiceValue('opt-margin') || '0');
       var out;
       return PDFLib.PDFDocument.create().then(function (doc) {
@@ -486,6 +581,7 @@
                   var imgData = ctx.createImageData(ifd.width, ifd.height);
                   imgData.data.set(rgba);
                   ctx.putImageData(imgData, 0, 0);
+                  canvas = orientCanvas(canvas, ifd.t274 ? ifd.t274[0] : 1);
                   var p = fmt === 'png'
                     ? canvasToBlob(canvas, 'image/png').then(function (b) { return b.arrayBuffer(); }).then(function (ab) { return out.embedPng(ab); })
                     : canvasToBlob(canvas, 'image/jpeg', 0.9).then(function (b) { return b.arrayBuffer(); }).then(function (ab) { return out.embedJpg(ab); });
@@ -520,12 +616,16 @@
     var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
 
-    if (location.hash === '#png') {
+    function applyHashFormat() {
+      if (location.hash !== '#png' && location.hash !== '#jpg') return;
+      var want = location.hash === '#png' ? 'png' : 'jpeg';
       var row = $('#opt-format');
       CA.$$('.opt-choice', row).forEach(function (c) {
-        c.classList.toggle('active', c.dataset.value === 'png');
+        c.classList.toggle('active', c.dataset.value === want);
       });
     }
+    applyHashFormat();
+    window.addEventListener('hashchange', applyHashFormat);
 
     btn.addEventListener('click', runGuard(btn, function () {
       var file = state.require();
@@ -726,18 +826,20 @@
             var pages = doc.getPages();
             pages.forEach(function (page, i) {
               CA.setProgress(20 + (i / pages.length) * 65, 'Sayfa ' + (i + 1) + '/' + pages.length + ' işleniyor…');
-              var w = page.getWidth(), h = page.getHeight();
-              var diag = Math.sqrt(w * w + h * h);
+              var box = visualBox(page);
+              var vw = box.vw, vh = box.vh;
+              var diag = Math.sqrt(vw * vw + vh * vh);
               var size = Math.max(20, Math.min(150, (diag * 0.75) / Math.max(1, text.length * 0.62)));
               var tw = font.widthOfTextAtSize(text, size);
-              var rad = Math.atan2(h, w);
+              var rad = Math.atan2(vh, vw);
               var deg = rad * 180 / Math.PI;
-              var x = w / 2 - (tw / 2) * Math.cos(rad) + (size * 0.35) * Math.sin(rad);
-              var y = h / 2 - (tw / 2) * Math.sin(rad) - (size * 0.35) * Math.cos(rad);
+              var vx = vw / 2 - (tw / 2) * Math.cos(rad) + (size * 0.35) * Math.sin(rad);
+              var vy = vh / 2 - (tw / 2) * Math.sin(rad) - (size * 0.35) * Math.cos(rad);
+              var pt = toPagePoint(box, vx, vy);
               page.drawText(text, {
-                x: x, y: y, size: size, font: font,
+                x: pt.x, y: pt.y, size: size, font: font,
                 color: color, opacity: opacity,
-                rotate: PDFLib.degrees(deg)
+                rotate: PDFLib.degrees(deg + box.rot)
               });
             });
             CA.setProgress(90, 'Dosya oluşturuluyor…');
@@ -782,14 +884,16 @@
               else label = String(n);
               var size = 10;
               var tw = font.widthOfTextAtSize(label, size);
-              var w = page.getWidth();
-              var x;
-              if (pos === 'alt-sag') x = w - 42 - tw;
-              else if (pos === 'alt-sol') x = 42;
-              else x = (w - tw) / 2;
+              var box = visualBox(page);
+              var vx;
+              if (pos === 'alt-sag') vx = box.vw - 42 - tw;
+              else if (pos === 'alt-sol') vx = 42;
+              else vx = (box.vw - tw) / 2;
+              var pt = toPagePoint(box, vx, 26);
               page.drawText(label, {
-                x: x, y: 26, size: size, font: font,
-                color: PDFLib.rgb(0.25, 0.25, 0.25)
+                x: pt.x, y: pt.y, size: size, font: font,
+                color: PDFLib.rgb(0.25, 0.25, 0.25),
+                rotate: PDFLib.degrees(box.rot)
               });
             });
             CA.setProgress(90, 'Dosya oluşturuluyor…');
