@@ -307,8 +307,8 @@
   /* Çıktı boyutu ön ayarları: uzun kenar piksel sınırı + JPEG kalitesi.
      Taramalar çoğu zaman 300 DPI gelir; UYAP/e-posta için küçültmek gerekir. */
   var SIZE_PRESETS = {
-    kucuk: { edge: 1500, q: 0.6 },
-    dengeli: { edge: 2200, q: 0.76 },
+    kucuk: { edge: 1300, q: 0.5 },
+    dengeli: { edge: 1700, q: 0.65 },
     yuksek: { edge: 0, q: 0.92 }
   };
 
