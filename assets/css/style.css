@@ -294,15 +294,12 @@ a:hover { color: var(--red-dark); }
   gap: 12px;
 }
 .tool-card .icon {
-  width: 38px; height: 38px;
-  border-radius: 9px;
-  background: var(--red-soft);
-  color: var(--red);
+  width: 40px; height: 40px;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  transition: all .15s ease;
 }
-.tool-card:hover .icon { background: var(--red); color: var(--white); }
+.tool-card .icon svg { transition: transform .18s ease; }
+.tool-card:hover .icon svg { transform: scale(1.08); }
 .tool-card h3 { font-size: 15px; font-weight: 700; }
 .tool-card .badge {
   display: inline-block;
@@ -447,9 +444,6 @@ a:hover { color: var(--red-dark); }
 .tool-head { text-align: center; margin-bottom: 32px; }
 .tool-head .icon {
   width: 56px; height: 56px;
-  border-radius: 12px;
-  background: var(--red-soft);
-  color: var(--red);
   display: inline-flex; align-items: center; justify-content: center;
   margin-bottom: 18px;
 }
