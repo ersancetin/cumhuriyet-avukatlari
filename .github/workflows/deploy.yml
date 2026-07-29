@@ -1,0 +1,39 @@
+name: GitHub Pages Yayını
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - claude/cumhuriyet-avukatlari-pdf-tools-qu0wib
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Depoyu al
+        uses: actions/checkout@v4
+      - name: Pages yapılandır
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - name: Siteyi paketle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - name: Yayınla
+        id: deployment
+        uses: actions/deploy-pages@v4

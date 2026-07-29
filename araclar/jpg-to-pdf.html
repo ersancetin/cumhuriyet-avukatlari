@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPG &rarr; PDF — Cumhuriyet Avukatları PDF Araçları</title>
+<meta name="description" content="JPG'den PDF'e dönüştürme aracı — fotoğraf ve görselleri tarayıcınızdan çıkmadan PDF'e çevirin. Ücretsiz ve açık kaynak.">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-tool="image2pdf">
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/logo.svg" alt="Cumhuriyet Avukatları logosu" class="brand-logo">
+      <span class="brand-text"><strong>CUMHUR&#304;YET AVUKATLARI</strong><small>PDF Araçları</small></span>
+    </a>
+    <nav class="site-nav">
+      <a href="../index.html#araclar">Araçlar</a>
+      <a href="../gizlilik.html">Gizlilik &amp; KVKK</a>
+      <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="tool-page">
+  <div class="container-narrow">
+    <a class="back-link" href="../index.html#araclar">&larr; Tüm Araçlar</a>
+    <div class="tool-head">
+      <span class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15.5l-5-5L5 21"/></svg></span>
+      <h1>JPG &rarr; PDF</h1>
+      <p>JPG, PNG ve WebP görsellerini sıralayarak tek bir PDF belgesinde toplayın. Her görsel bir sayfa olur.</p>
+      <div class="privacy-pill">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        Dosyalarınız tarayıcınızdan çıkmaz — sunucuya hiçbir veri gönderilmez
+      </div>
+    </div>
+
+    <div class="tool-panel">
+      <div class="dropzone" id="dropzone">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/></svg>
+        <div class="dz-title">Görselleri seçin veya buraya sürükleyin</div>
+        <div class="dz-sub">JPG, PNG, WebP · Birden fazla seçebilirsiniz</div>
+        <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.webp" multiple>
+      </div>
+
+      <div class="file-list" id="file-list"></div>
+
+<div class="options">
+        <div class="opt-group">
+          <label class="opt-label">Sayfa boyutu</label>
+          <div class="opt-row" id="opt-pagesize">
+            <label class="opt-choice active" data-value="a4p">A4 Dikey</label>
+            <label class="opt-choice" data-value="a4l">A4 Yatay</label>
+            <label class="opt-choice" data-value="auto">Görsel boyutu</label>
+          </div>
+        </div>
+        <div class="opt-group">
+          <label class="opt-label">Kenar boşluğu</label>
+          <div class="opt-row" id="opt-margin">
+            <label class="opt-choice active" data-value="0">Yok</label>
+            <label class="opt-choice" data-value="28">Dar</label>
+            <label class="opt-choice" data-value="56">Geniş</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="run-area">
+        <button class="btn btn-primary btn-block" id="run-btn">PDF Oluştur</button>
+      </div>
+
+      <div class="error-box" id="error-box"></div>
+
+      <div class="progress-wrap" id="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="status-text" id="status-text"></div>
+      </div>
+
+      <div class="result-area" id="result-area">
+        <div class="result-box">
+          <div class="r-title"></div>
+          <div class="r-sub"></div>
+          <div class="r-actions" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom" style="border-top:none;margin-top:0;padding-top:0">
+      <span>&copy; 2026 Cumhuriyet Avukatları &middot; Meslektaş dayanışması için geliştirilmiştir &middot; <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">Açık kaynak</a></span>
+      <span><a href="../gizlilik.html">Gizlilik &amp; KVKK</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/vendor/pdf-lib.min.js"></script>
+
+<script src="../assets/js/common.js"></script>
+<script src="../assets/js/tools.js"></script>
+</body>
+</html>
