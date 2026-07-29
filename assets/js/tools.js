@@ -59,7 +59,8 @@
           CA.setProgress(((i - 1) / total) * 90, progressText + ' (' + i + '/' + total + ')');
           return doc.getPage(i).then(function (page) {
             var vp1 = page.getViewport({ scale: 1 });
-            var vp = page.getViewport({ scale: scale });
+            var sc = (typeof scale === 'function') ? scale(vp1) : scale;
+            var vp = page.getViewport({ scale: sc });
             var canvas = document.createElement('canvas');
             canvas.width = Math.ceil(vp.width);
             canvas.height = Math.ceil(vp.height);
@@ -704,10 +705,12 @@
   tools.compress = function () {
     var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
+    /* Ölçek sabit değil, hedef piksel genişliğine göre: görselden üretilmiş
+       dev sayfalı PDF'lerde de gerçek küçülme sağlar */
     var PRESETS = {
-      dusuk: { scale: 1.0, q: 0.5 },
-      orta: { scale: 1.5, q: 0.62 },
-      yuksek: { scale: 2.0, q: 0.75 }
+      dusuk: { edge: 1300, q: 0.5 },
+      orta: { edge: 1700, q: 0.62 },
+      yuksek: { edge: 2200, q: 0.78 }
     };
     btn.addEventListener('click', runGuard(btn, function () {
       var file = state.require();
@@ -718,7 +721,11 @@
         out = doc;
         return CA.readFile(file);
       }).then(function (buf) {
-        return renderPdfPages(buf, preset.scale, function (canvas, i, total, pt) {
+        var scaleFor = function (vp1) {
+          var long = Math.max(vp1.width, vp1.height);
+          return Math.min(2.5, preset.edge / long);
+        };
+        return renderPdfPages(buf, scaleFor, function (canvas, i, total, pt) {
           return canvasToBlob(canvas, 'image/jpeg', preset.q)
             .then(function (b) { return b.arrayBuffer(); })
             .then(function (ab) { return out.embedJpg(ab); })
