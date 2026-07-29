@@ -2,7 +2,7 @@
    Tüm işlemler tarayıcıda gerçekleşir; hiçbir dosya sunucuya gönderilmez. */
 'use strict';
 
-/* mobil menü */
+/* mobil menü + mega menü klavye desteği */
 document.addEventListener('DOMContentLoaded', function () {
   var toggle = document.getElementById('nav-toggle');
   var nav = document.getElementById('site-nav');

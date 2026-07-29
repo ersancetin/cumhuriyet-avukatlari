@@ -55,6 +55,7 @@ a:hover { color: var(--red-dark); }
   justify-content: space-between;
   height: 68px;
   gap: 16px;
+  position: relative;
 }
 
 .brand { display: flex; align-items: center; gap: 12px; color: var(--ink); min-width: 0; }
@@ -89,6 +90,50 @@ a:hover { color: var(--red-dark); }
 }
 .site-nav .nav-icon:hover { color: var(--red); }
 .site-nav .nav-icon svg { display: block; }
+
+/* "Araçlar" hover mega menüsü */
+.nav-drop { display: flex; align-items: center; padding: 23px 0; }
+.nav-drop-btn { display: inline-flex; align-items: center; gap: 6px; }
+.nav-drop-btn svg { transition: transform .15s ease; }
+.nav-drop:hover .nav-drop-btn svg { transform: rotate(180deg); }
+.nav-drop-panel {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-top: 2px solid var(--red);
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 16px 40px rgba(34, 29, 24, .12);
+  padding: 24px 26px 26px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px 32px;
+  z-index: 60;
+}
+.nav-drop:hover .nav-drop-panel,
+.nav-drop:focus-within .nav-drop-panel { display: grid; }
+.drop-col { display: flex; flex-direction: column; }
+.drop-cat {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 10px;
+  padding: 0 10px;
+}
+.site-nav .nav-drop-panel a {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 7px 10px;
+  border-radius: 7px;
+}
+.site-nav .nav-drop-panel a:hover { background: var(--red-soft); color: var(--red); }
 
 .nav-toggle {
   display: none;
@@ -271,18 +316,8 @@ a:hover { color: var(--red-dark); }
   padding: 1px 8px;
   margin-top: 4px;
 }
-/* açıklama ve eylem, fareyle üzerine gelince belirir (ilovepdf tarzı) */
-.tool-card .card-more {
-  max-height: 0;
-  opacity: 0;
-  overflow: hidden;
-  transition: max-height .25s ease, opacity .2s ease, margin .25s ease;
-}
-.tool-card:hover .card-more, .tool-card:focus-visible .card-more {
-  max-height: 120px;
-  opacity: 1;
-  margin-top: 12px;
-}
+/* açıklama her zaman görünür; "Aracı Aç" fareyle üzerine gelince belirir */
+.tool-card .card-more { display: block; margin-top: 12px; }
 .tool-card .card-more p { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .tool-card .card-more .open {
   display: inline-flex;
@@ -294,10 +329,17 @@ a:hover { color: var(--red-dark); }
   letter-spacing: .06em;
   text-transform: uppercase;
   color: var(--red);
+  opacity: 0;
+  transform: translateY(3px);
+  transition: opacity .18s ease, transform .18s ease;
 }
-/* dokunmatik cihazlarda açıklamalar her zaman görünür */
+.tool-card:hover .card-more .open, .tool-card:focus-visible .card-more .open {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* dokunmatik cihazlarda bağlantı her zaman görünür */
 @media (hover: none) {
-  .tool-card .card-more { max-height: none; opacity: 1; margin-top: 12px; }
+  .tool-card .card-more .open { opacity: 1; transform: none; }
 }
 
 /* ---------- Security section ---------- */
@@ -636,6 +678,10 @@ a:hover { color: var(--red-dark); }
   .site-nav a:first-child { border-top: none; }
   .site-nav .nav-icon { gap: 10px; }
   .site-nav .nav-icon::after { content: attr(title); }
+  /* mobilde mega menü devre dışı: "Araçlar" düz bağlantı olarak davranır */
+  .site-nav .nav-drop { display: contents; }
+  .nav-drop-panel { display: none !important; }
+  .nav-drop-btn svg { display: none; }
 
   .hero { padding: 52px 0 44px; }
   .hero p.lead { font-size: 15.5px; }
