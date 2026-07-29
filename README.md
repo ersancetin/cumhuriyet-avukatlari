@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.svg" width="120" alt="Cumhuriyet Avukatları">
+  <img src="assets/logo.png" width="120" alt="Cumhuriyet Avukatları">
 </p>
 
 <h1 align="center">Cumhuriyet Avukatları — PDF Araçları</h1>

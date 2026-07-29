@@ -58,7 +58,7 @@ a:hover { color: var(--red-dark); }
 
 .brand { display: flex; align-items: center; gap: 14px; color: var(--ink); }
 .brand:hover { color: var(--ink); }
-.brand-logo { width: 46px; height: 46px; display: block; }
+.brand-logo { width: 54px; height: 54px; display: block; }
 .brand-text { display: flex; flex-direction: column; line-height: 1.25; }
 .brand-text strong {
   font-size: 13px;
