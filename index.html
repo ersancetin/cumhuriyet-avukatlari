@@ -16,10 +16,14 @@
       <img src="assets/logo.png" alt="Cumhuriyet Avukatları logosu" class="brand-logo">
       <span class="brand-text"><strong>CUMHUR&#304;YET AVUKATLARI</strong><small>PDF Araçları</small></span>
     </a>
-    <nav class="site-nav">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menü" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav">
       <a href="#araclar">Araçlar</a>
-      <a href="gizlilik.html">Gizlilik &amp; KVKK</a>
-      <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub</a>
+      <a href="gizlilik.html">Gizlilik</a>
+      <a class="nav-icon" href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a class="nav-icon" href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/></svg></a>
     </nav>
   </div>
 </header>
@@ -32,7 +36,7 @@
     Müvekkil sırrı ve KVKK hassasiyetiyle, Cumhuriyet Avukatları tarafından geliştirilmiştir.</p>
     <div class="hero-actions">
       <a href="#araclar" class="btn btn-primary">Araçlara Git</a>
-      <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener" class="btn btn-outline">Kaynak Kodu İncele</a>
+      <a href="gizlilik.html" class="btn btn-outline">Gizlilik &amp; KVKK</a>
     </div>
   </div>
 </section>
@@ -65,80 +69,114 @@
       <h2>İhtiyacınız olan tüm PDF işlemleri</h2>
       <p>Dilekçe ekleri, deliller, taramalar ve dosyalarınız için — hepsi cihazınızdan çıkmadan.</p>
     </div>
+
+    <div class="tool-cat"><span>Dönüştürme</span></div>
     <div class="tool-grid">
 
       <a class="tool-card" href="araclar/jpg-to-pdf.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15.5l-5-5L5 21"/></svg></span>
-        <h3>JPG &rarr; PDF</h3>
-        <p>Fotoğraf ve görselleri sıralayarak tek bir PDF dosyasında toplayın.</p>
-        <span class="badge">En çok kullanılan</span>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9.5" r="1.5"/><path d="M21 15.5l-5-5L5 21"/></svg></span>
+          <span><h3>JPG &rarr; PDF</h3><span class="badge">En çok kullanılan</span></span>
+        </span>
+        <span class="card-more"><p>Fotoğraf ve görselleri sıralayarak tek bir PDF dosyasında toplayın.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/tiff-to-pdf.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13.5l9 5 9-5"/></svg></span>
-        <h3>TIFF &rarr; PDF</h3>
-        <p>Tek veya çok sayfalı TIFF taramaları PDF'e dönüştürün.</p>
-        <span class="badge">Taramalar için</span>
-      </a>
-
-      <a class="tool-card" href="araclar/pdf-birlestir.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-3"/><rect x="3" y="8" width="13" height="13" rx="1"/></svg></span>
-        <h3>PDF Birleştir</h3>
-        <p>Birden fazla PDF'i istediğiniz sırada tek dosyada birleştirin.</p>
-      </a>
-
-      <a class="tool-card" href="araclar/pdf-ayir.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16" stroke-dasharray="3 3"/></svg></span>
-        <h3>PDF Ayır</h3>
-        <p>Sayfa aralığı çıkarın veya her sayfayı ayrı PDF olarak kaydedin.</p>
-      </a>
-
-      <a class="tool-card" href="araclar/pdf-sikistir.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6m0 0L9 6m3 3l3-3M12 21v-6m0 0l-3 3m3-3l3 3"/><path d="M4 12h2M18 12h2"/></svg></span>
-        <h3>PDF Sıkıştır</h3>
-        <p>UYAP ve e-posta sınırları için dosya boyutunu küçültün.</p>
-      </a>
-
-      <a class="tool-card" href="araclar/pdf-to-jpg.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="10" height="12" rx="1"/><path d="M13 21h8v-8"/><path d="M21 21l-6-6"/></svg></span>
-        <h3>PDF &rarr; JPG</h3>
-        <p>PDF sayfalarını yüksek çözünürlüklü JPG görsellerine dönüştürün.</p>
-      </a>
-
-      <a class="tool-card" href="araclar/pdf-to-jpg.html#png">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="10" height="12" rx="1"/><circle cx="17" cy="17" r="4"/></svg></span>
-        <h3>PDF &rarr; PNG</h3>
-        <p>PDF sayfalarını kayıpsız PNG görsellerine dönüştürün.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13.5l9 5 9-5"/></svg></span>
+          <span><h3>TIFF &rarr; PDF</h3><span class="badge">Taramalar için</span></span>
+        </span>
+        <span class="card-more"><p>Tek veya çok sayfalı TIFF taramaları PDF'e dönüştürün.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/jpg-to-pdf.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16l3-4 2.5 3 2-2.5L18 16"/></svg></span>
-        <h3>PNG &rarr; PDF</h3>
-        <p>PNG ve WebP görsellerini PDF belgesine dönüştürün.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 16l3-4 2.5 3 2-2.5L18 16"/></svg></span>
+          <span><h3>PNG &rarr; PDF</h3></span>
+        </span>
+        <span class="card-more"><p>PNG ve WebP görsellerini PDF belgesine dönüştürün.</p><span class="open">Aracı Aç &rarr;</span></span>
+      </a>
+
+      <a class="tool-card" href="araclar/pdf-to-jpg.html">
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="10" height="12" rx="1"/><path d="M13 21h8v-8"/><path d="M21 21l-6-6"/></svg></span>
+          <span><h3>PDF &rarr; JPG</h3></span>
+        </span>
+        <span class="card-more"><p>PDF sayfalarını yüksek çözünürlüklü JPG görsellerine dönüştürün.</p><span class="open">Aracı Aç &rarr;</span></span>
+      </a>
+
+      <a class="tool-card" href="araclar/pdf-to-jpg.html#png">
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="10" height="12" rx="1"/><circle cx="17" cy="17" r="4"/></svg></span>
+          <span><h3>PDF &rarr; PNG</h3></span>
+        </span>
+        <span class="card-more"><p>PDF sayfalarını kayıpsız PNG görsellerine dönüştürün.</p><span class="open">Aracı Aç &rarr;</span></span>
+      </a>
+
+    </div>
+
+    <div class="tool-cat"><span>Birleştir &amp; Düzenle</span></div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="araclar/pdf-birlestir.html">
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 7V4a1 1 0 0 1 1-1h11a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1h-3"/><rect x="3" y="8" width="13" height="13" rx="1"/></svg></span>
+          <span><h3>PDF Birleştir</h3></span>
+        </span>
+        <span class="card-more"><p>Birden fazla PDF'i istediğiniz sırada tek dosyada birleştirin.</p><span class="open">Aracı Aç &rarr;</span></span>
+      </a>
+
+      <a class="tool-card" href="araclar/pdf-ayir.html">
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16" stroke-dasharray="3 3"/></svg></span>
+          <span><h3>PDF Ayır</h3></span>
+        </span>
+        <span class="card-more"><p>Sayfa aralığı çıkarın veya her sayfayı ayrı PDF olarak kaydedin.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/pdf-dondur.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.9-6.6"/><path d="M21 3v5.5h-5.5"/></svg></span>
-        <h3>PDF Döndür</h3>
-        <p>Ters taranmış sayfaları kalıcı olarak doğru yöne çevirin.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.9-6.6"/><path d="M21 3v5.5h-5.5"/></svg></span>
+          <span><h3>PDF Döndür</h3></span>
+        </span>
+        <span class="card-more"><p>Ters taranmış sayfaları kalıcı olarak doğru yöne çevirin.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/sayfa-sil.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9.5 10.5l5 5M14.5 10.5l-5 5"/></svg></span>
-        <h3>Sayfa Sil</h3>
-        <p>Gereksiz veya boş sayfaları PDF'ten kaldırın.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9.5 10.5l5 5M14.5 10.5l-5 5"/></svg></span>
+          <span><h3>Sayfa Sil</h3></span>
+        </span>
+        <span class="card-more"><p>Gereksiz veya boş sayfaları PDF'ten kaldırın.</p><span class="open">Aracı Aç &rarr;</span></span>
+      </a>
+
+    </div>
+
+    <div class="tool-cat"><span>Optimizasyon &amp; Damga</span></div>
+    <div class="tool-grid">
+
+      <a class="tool-card" href="araclar/pdf-sikistir.html">
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v6m0 0L9 6m3 3l3-3M12 21v-6m0 0l-3 3m3-3l3 3"/><path d="M4 12h2M18 12h2"/></svg></span>
+          <span><h3>PDF Sıkıştır</h3></span>
+        </span>
+        <span class="card-more"><p>UYAP ve e-posta sınırları için dosya boyutunu küçültün.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/filigran.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
-        <h3>Filigran Ekle</h3>
-        <p>"GİZLİDİR", "SURET" gibi metinleri tüm sayfalara işleyin.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></svg></span>
+          <span><h3>Filigran Ekle</h3></span>
+        </span>
+        <span class="card-more"><p>"GİZLİDİR", "SURET" gibi metinleri tüm sayfalara işleyin.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
       <a class="tool-card" href="araclar/sayfa-numarasi.html">
-        <span class="icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4l-2 16M16.5 4l-2 16M4 9.5h17M3 14.5h17"/></svg></span>
-        <h3>Sayfa Numarası</h3>
-        <p>Dilekçe ve dosyalarınıza otomatik sayfa numarası ekleyin.</p>
+        <span class="card-top">
+          <span class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4l-2 16M16.5 4l-2 16M4 9.5h17M3 14.5h17"/></svg></span>
+          <span><h3>Sayfa Numarası</h3></span>
+        </span>
+        <span class="card-more"><p>Dilekçe ve dosyalarınıza otomatik sayfa numarası ekleyin.</p><span class="open">Aracı Aç &rarr;</span></span>
       </a>
 
     </div>
@@ -148,26 +186,48 @@
 <section class="section-dark" id="guvenlik">
   <div class="container">
     <div class="section-head">
-      <span class="overline">Veri Güvenliği</span>
+      <span class="overline">Veri Güvenliği &middot; Meslek Etiği</span>
       <h2>Dosyalarınız cihazınızdan çıkmaz</h2>
       <p>Bu site bir yükleme servisi değildir; bir hesap makinesi gibi tamamen sizin tarayıcınızda çalışır.</p>
     </div>
     <div class="sec-grid">
       <div class="sec-item">
         <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Sunucu yok, yükleme yok</h3>
-        <p>Seçtiğiniz dosyalar internete gönderilmez; tüm dönüştürme ve düzenleme işlemleri cihazınızın belleğinde yapılır. Sekmeyi kapattığınızda geriye hiçbir iz kalmaz.</p>
+        <p>Seçtiğiniz dosyalar internete gönderilmez; tüm dönüştürme ve düzenleme işlemleri cihazınızın
+        geçici belleğinde yapılır. Sitenin dosya kabul edebileceği bir sunucusu dahi yoktur; sekmeyi
+        kapattığınızda geriye hiçbir iz kalmaz. Bu iddiayı tarayıcınızın geliştirici araçlarındaki
+        "Ağ" sekmesinden bizzat doğrulayabilirsiniz.</p>
       </div>
       <div class="sec-item">
-        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg>Meslek sırrına saygı</h3>
-        <p>Avukatlık Kanunu m.36 uyarınca sır saklama yükümlülüğü tavizsizdir. Müvekkil bilgisi içeren hiçbir belgeyi üçüncü taraf sunuculara emanet etmemeniz gerektiğine inanıyoruz — bu araçlar tam bu ilkeyle geliştirildi.</p>
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6l8-3z"/></svg>Sır saklama yükümlülüğü</h3>
+        <p>1136 sayılı Avukatlık Kanunu m.36 ve TBB Meslek Kuralları m.37 uyarınca avukat, görevi
+        dolayısıyla öğrendiklerini açıklayamaz; bu yükümlülük süresizdir ve büro çalışanlarını da kapsar.
+        Müvekkil bilgisi içeren belgelerin, kim tarafından ve hangi hukuk düzeninde işletildiği
+        bilinmeyen sunuculara yüklenmesi; sır saklama yükümlülüğü bakımından disiplin ve ceza
+        sorumluluğuna kadar uzanabilen bir risk alanıdır. Bu araçlar o riski mimari düzeyde ortadan kaldırır.</p>
       </div>
       <div class="sec-item">
-        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>Doğrulanabilir güvenlik</h3>
-        <p>Kaynak kodun tamamı <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub'da açık</a>tır. Tarayıcınızın geliştirici araçlarındaki "Ağ" sekmesinden hiçbir dosyanın dışarı gitmediğini kendiniz teyit edebilirsiniz.</p>
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M5 7l7-4 7 4M4 21h16M6 11v7M10 11v7M14 11v7M18 11v7"/></svg>KVKK'ya yapısal uyum</h3>
+        <p>KVKK m.4'teki genel ilkelere en güçlü uyum, verinin hiç işlenmemesidir ("privacy by design").
+        Bu site kişisel veri toplamaz, kaydetmez, aktarmaz; çerez ve analitik içermez. Ayrıca avukatın
+        KVKK m.12 kapsamındaki veri güvenliği tedbirleri alma yükümlülüğü yönünden de, belgeyi hiç ağa
+        çıkarmayan bir araç; yüklemeli servislere göre savunulabilir en güvenli tercihtir.</p>
+      </div>
+      <div class="sec-item">
+        <h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg>Yurt dışına aktarım sorunu yok</h3>
+        <p>Bilinen çevrimiçi PDF sitelerinin sunucuları çoğunlukla yurt dışındadır; oraya belge yüklemek,
+        KVKK m.9'daki yurt dışına veri aktarımı rejimini ve müvekkil aydınlatması sorununu gündeme getirir.
+        Burada böyle bir sorun hiç doğmaz: belge cihazdan çıkmadığı için ortada "aktarım" da yoktur.</p>
       </div>
     </div>
     <div class="sec-note">
-      <strong>KVKK uyumu tasarım gereğidir:</strong> 6698 sayılı Kişisel Verilerin Korunması Kanunu kapsamında bu site kişisel veri <em>toplamaz, işlemez, kaydetmez ve aktarmaz</em>. Çerez, üyelik, izleme ve analitik yoktur. Ayrıntılar için <a href="gizlilik.html">Gizlilik &amp; KVKK Bildirimi</a>'ni inceleyebilirsiniz.
+      <strong>Dayanak ve güvenceler:</strong>
+      <ul>
+        <li>Avukatlık Kanunu m.36 &middot; TBB Meslek Kuralları m.37 — meslek sırrının korunması</li>
+        <li>KVKK m.4 (genel ilkeler), m.9 (yurt dışına aktarım), m.12 (veri güvenliği) — verinin hiç işlenmemesi suretiyle yapısal uyum</li>
+        <li>Kaynak kod <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub'da açık</a> — dileyen her meslektaş denetleyebilir</li>
+      </ul>
+      Ayrıntılı değerlendirme için <a href="gizlilik.html">Gizlilik &amp; KVKK Bildirimi</a>'ni inceleyiniz.
     </div>
   </div>
 </section>
@@ -197,34 +257,47 @@
           <img src="assets/logo.png" alt="Cumhuriyet Avukatları logosu" class="brand-logo">
           <span class="brand-text"><strong>CUMHUR&#304;YET AVUKATLARI</strong><small>PDF Araçları</small></span>
         </a>
-        <p>Cumhuriyet Avukatları tarafından meslektaş dayanışması için geliştirilmiştir.
-        Ücretsizdir, üyelik gerektirmez, veri toplamaz.</p>
+        <p>Meslektaş dayanışması için geliştirildi. Ücretsiz, üyeliksiz; veri toplamaz.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener" aria-label="GitHub"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/></svg></a>
+          <a href="https://cumhuriyetavukatlari.com" target="_blank" rel="noopener" aria-label="Web sitesi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
       </div>
       <div class="footer-col">
-        <h4>Araçlar</h4>
+        <h4>Dönüştürme</h4>
         <ul>
           <li><a href="araclar/jpg-to-pdf.html">JPG &rarr; PDF</a></li>
           <li><a href="araclar/tiff-to-pdf.html">TIFF &rarr; PDF</a></li>
-          <li><a href="araclar/pdf-birlestir.html">PDF Birleştir</a></li>
-          <li><a href="araclar/pdf-ayir.html">PDF Ayır</a></li>
-          <li><a href="araclar/pdf-sikistir.html">PDF Sıkıştır</a></li>
+          <li><a href="araclar/pdf-to-jpg.html">PDF &rarr; JPG / PNG</a></li>
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Kurumsal</h4>
+        <h4>Düzenleme</h4>
+        <ul>
+          <li><a href="araclar/pdf-birlestir.html">PDF Birleştir</a></li>
+          <li><a href="araclar/pdf-ayir.html">PDF Ayır</a></li>
+          <li><a href="araclar/pdf-sikistir.html">PDF Sıkıştır</a></li>
+          <li><a href="araclar/filigran.html">Filigran Ekle</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Bağlantılar</h4>
         <ul>
           <li><a href="https://cumhuriyetavukatlari.com" target="_blank" rel="noopener">cumhuriyetavukatlari.com</a></li>
+          <li><a href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">Kaynak Kod</a></li>
           <li><a href="gizlilik.html">Gizlilik &amp; KVKK</a></li>
-          <li><a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">Kaynak Kod (GitHub)</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span>&copy; 2026 Cumhuriyet Avukatları &middot; Açık kaynak, MIT lisansı</span>
+      <span>&copy; 2026 Cumhuriyet Avukatları<span class="sep">&middot;</span>Açık kaynak, MIT lisansı</span>
       <span>Dosyalarınız tarayıcınızdan çıkmaz.</span>
     </div>
   </div>
 </footer>
 
+<script src="assets/js/common.js"></script>
 </body>
 </html>

@@ -16,10 +16,14 @@
       <img src="assets/logo.png" alt="Cumhuriyet Avukatları logosu" class="brand-logo">
       <span class="brand-text"><strong>CUMHUR&#304;YET AVUKATLARI</strong><small>PDF Araçları</small></span>
     </a>
-    <nav class="site-nav">
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menü" aria-expanded="false">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="site-nav" id="site-nav">
       <a href="index.html#araclar">Araçlar</a>
-      <a href="gizlilik.html">Gizlilik &amp; KVKK</a>
-      <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub</a>
+      <a href="gizlilik.html">Gizlilik</a>
+      <a class="nav-icon" href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+      <a class="nav-icon" href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener" title="GitHub" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/></svg></a>
     </nav>
   </div>
 </header>
@@ -43,15 +47,16 @@
       <li>Dosyalarınız internete <strong>yüklenmez</strong>; sitenin dosya alabileceği bir sunucusu dahi yoktur.</li>
       <li>İşlem sonucu oluşan dosya, doğrudan tarayıcınızdan cihazınıza kaydedilir.</li>
       <li>Sekmeyi kapattığınızda bellekteki veriler tarayıcı tarafından temizlenir; sitede kalıcı hiçbir kayıt oluşmaz.</li>
+      <li>Sitede kullanılan tüm yazılım kütüphaneleri sitenin kendi dosyaları arasında barındırılır; çalışma
+      esnasında üçüncü taraf hiçbir servise (CDN, analitik, reklam ağı) bağlantı kurulmaz.</li>
     </ul>
     <p>Bu iddia doğrulanabilirdir: tarayıcınızın geliştirici araçlarını açıp (F12) "Ağ / Network" sekmesini
     izleyerek, dosya işlemleri sırasında dışarıya hiçbir veri gönderilmediğini bizzat teyit edebilirsiniz.
     Sitenin tüm kaynak kodu da <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">GitHub üzerinde açık</a>tır.</p>
 
     <h2>2. KVKK (6698 sayılı Kanun) yönünden değerlendirme</h2>
-    <p>6698 sayılı Kişisel Verilerin Korunması Kanunu'nun 3. maddesi anlamında "kişisel verilerin işlenmesi";
-    verilerin elde edilmesi, kaydedilmesi, depolanması, aktarılması gibi veriler üzerinde gerçekleştirilen
-    işlemleri ifade eder. Bu site:</p>
+    <p>KVKK m.3 anlamında "kişisel verilerin işlenmesi"; verilerin elde edilmesi, kaydedilmesi, depolanması,
+    değiştirilmesi, aktarılması gibi veriler üzerinde gerçekleştirilen her türlü işlemi ifade eder. Bu site:</p>
     <ul>
       <li>Ziyaretçilerinden ad, soyad, e-posta, T.C. kimlik numarası gibi hiçbir kişisel veri <strong>talep etmez ve elde etmez</strong>,</li>
       <li>İşlediğiniz belgelerin içeriğine <strong>erişemez</strong>; belgeler site işleticisine hiçbir aşamada ulaşmaz,</li>
@@ -59,16 +64,56 @@
       <li>Üçüncü kişilere veri <strong>aktarmaz</strong>.</li>
     </ul>
     <p>Bu nedenle site işleticisi, ziyaretçi belgeleri bakımından KVKK anlamında "veri sorumlusu" veya
-    "veri işleyen" sıfatını haiz değildir; belgeleriniz üzerindeki tek tasarruf yetkisi sizdedir. Kanunun
-    4. maddesindeki genel ilkelere uyum, en güçlü haliyle — verinin hiç toplanmaması suretiyle ("privacy by design") — sağlanmıştır.</p>
+    "veri işleyen" sıfatını haiz değildir; belgeleriniz üzerindeki tek tasarruf yetkisi sizdedir. KVKK
+    m.4'te sayılan hukuka ve dürüstlük kurallarına uygunluk, amaçla bağlantılı ve ölçülü işleme gibi genel
+    ilkelere uyum, en güçlü haliyle — verinin hiç toplanmaması suretiyle ("privacy by design / veri
+    minimizasyonu") — sağlanmıştır.</p>
 
-    <h2>3. Avukatlık mesleği ve sır saklama yükümlülüğü</h2>
-    <p>1136 sayılı Avukatlık Kanunu'nun 36. maddesi uyarınca avukatlar, görevleri dolayısıyla öğrendikleri
-    hususları açığa vuramazlar. Müvekkil bilgisi içeren dilekçe, delil ve belgelerin, denetlenemeyen üçüncü
-    taraf sunuculara yüklenmesi bu yükümlülük bakımından risk oluşturur. Bu araç seti, tam da bu riski ortadan
-    kaldırmak amacıyla; belgelerin <strong>avukatın cihazından hiç çıkmadığı</strong> bir mimariyle geliştirilmiştir.</p>
+    <h2>3. Çevrimiçi PDF siteleri ve yurt dışına veri aktarımı (KVKK m.9)</h2>
+    <p>Piyasadaki bilinen çevrimiçi PDF araçlarının çoğu, yüklenen dosyayı kendi sunucusunda işler ve bu
+    sunucular genellikle yurt dışındadır. Müvekkile ait kişisel veri içeren bir belgenin böyle bir servise
+    yüklenmesi, hukuken şu sonuçları gündeme getirir:</p>
+    <ul>
+      <li>KVKK m.9 uyarınca kişisel verilerin <strong>yurt dışına aktarılması</strong> kural olarak özel şartlara
+      (yeterlilik kararı, uygun güvenceler veya açık rıza gibi) bağlıdır; bir dönüştürme sitesine yükleme,
+      farkında olunmadan bu rejimi ihlal eden fiili bir aktarım oluşturabilir,</li>
+      <li>Belge içeriğindeki üçüncü kişiler (müvekkil, karşı taraf, tanıklar) yönünden <strong>aydınlatma ve
+      hukuka uygunluk sebebi</strong> sorunu doğar,</li>
+      <li>Servis sağlayıcının dosyaları ne kadar süre sakladığı, hangi amaçla kullandığı ve kimlerle
+      paylaştığı çoğu zaman <strong>denetlenemez</strong>.</li>
+    </ul>
+    <p>Bu sitede böyle bir sorun yapısal olarak <strong>hiç doğmaz</strong>: belge cihazdan çıkmadığı için
+    ortada aktarılan bir veri, dolayısıyla "aktarım" da yoktur.</p>
 
-    <h2>4. Barındırma hakkında dürüst bilgilendirme</h2>
+    <h2>4. Avukatın veri güvenliği yükümlülüğü (KVKK m.12)</h2>
+    <p>Avukat, müvekkil verileri bakımından veri sorumlusudur ve KVKK m.12 uyarınca kişisel verilerin
+    hukuka aykırı işlenmesini ve bunlara hukuka aykırı erişilmesini önlemek için uygun güvenlik düzeyini
+    temin etmeye yönelik gerekli her türlü teknik ve idari tedbiri almakla yükümlüdür. Belgelerin
+    denetlenemeyen üçüncü taraf sunuculara yüklenmesi bu yükümlülükle bağdaştırılması güç bir uygulamadır;
+    olası bir veri ihlalinde Kişisel Verileri Koruma Kurulu'na ve ilgilisine bildirim yükümlülüğü ile
+    idari yaptırım riski avukatın üzerindedir. Belgeyi hiç ağa çıkarmayan bu araç seti, m.12 tedbirleri
+    yönünden savunulabilir en güvenli tercihi sunar.</p>
+
+    <h2>5. Meslek sırrı ve meslek etiği</h2>
+    <p>Avukatlık mesleğinde gizlilik, salt bir veri koruma meselesi değil; mesleğin kurucu ilkelerinden
+    biridir:</p>
+    <ul>
+      <li><strong>Avukatlık Kanunu m.36:</strong> Avukatlar, kendilerine tevdi edilen veya avukatlık görevi
+      dolayısıyla öğrendikleri hususları açığa vuramazlar. Bu yasak, tanıklıktan çekinme hakkıyla birlikte,
+      görev sona erdikten sonra da devam eder.</li>
+      <li><strong>TBB Meslek Kuralları m.37:</strong> Avukat meslek sırrı ile bağlıdır; yardımcılarının ve
+      çalışanlarının da bu sırra uymasını sağlamakla yükümlüdür.</li>
+      <li>Sır saklama yükümlülüğünün ihlali; <strong>disiplin sorumluluğunun</strong> yanı sıra hukuki ve
+      cezai sorumluluğa da yol açabilir.</li>
+      <li>Müvekkil ile avukat arasındaki güven ilişkisi, belgelerin üçüncü kişilerin erişimine kapalı
+      tutulmasını zorunlu kılar; bu, savunma hakkının ve adil yargılanmanın da güvencesidir.</li>
+    </ul>
+    <p>Dilekçe, delil, bilirkişi raporu, sağlık kaydı, ticari sır içeren sözleşme gibi belgelerin gündelik
+    pratikte en çok işlendiği an, tam da PDF dönüştürme ve birleştirme anıdır. Bu araç seti, o kritik anda
+    belgenin <strong>avukatın cihazından hiç çıkmadığı</strong> bir çalışma düzeni kurarak sır saklama
+    yükümlülüğünü teknik mimariyle güvence altına alır.</p>
+
+    <h2>6. Barındırma hakkında dürüst bilgilendirme</h2>
     <p>Bu site, statik dosya barındırma hizmeti olan GitHub Pages üzerinden yayımlanmaktadır. Herhangi bir web
     sitesini ziyaret ettiğinizde olduğu gibi, sayfayı görüntüleyebilmeniz için tarayıcınız barındırma
     sağlayıcısının sunucusundan sitenin kodunu indirir; bu esnada IP adresiniz, her internet bağlantısında
@@ -77,25 +122,68 @@
     <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">GitHub Gizlilik Bildirimi</a>'ne bakınız.
     <strong>İşlediğiniz dosyalar bu kapsamda dahi değildir; dosyalar hiçbir koşulda ağa çıkmaz.</strong></p>
 
-    <h2>5. Sorumluluk kaydı</h2>
+    <h2>7. Sorumluluk kaydı</h2>
     <p>Araçlar "olduğu gibi" sunulmaktadır ve meslektaş dayanışması amacıyla ücretsiz olarak paylaşılmıştır.
-    Çıktı dosyalarınızı önemli işlemlerde kullanmadan önce kontrol etmeniz önerilir. Kaynak kod MIT lisansına
-    tabidir; lisans metnindeki sorumluluk sınırlamaları geçerlidir.</p>
+    Bu sayfadaki açıklamalar genel bilgilendirme niteliğindedir; somut olaya ilişkin hukuki değerlendirme
+    yerine geçmez. Çıktı dosyalarınızı önemli işlemlerde kullanmadan önce kontrol etmeniz önerilir. Kaynak
+    kod MIT lisansına tabidir; lisans metnindeki sorumluluk sınırlamaları geçerlidir.</p>
 
-    <h2>6. İletişim</h2>
-    <p>Soru ve önerileriniz için <a href="https://github.com/ersancetin/cumhuriyet-avukatlari/issues" target="_blank" rel="noopener">GitHub üzerinden</a>
+    <h2>8. İletişim</h2>
+    <p>Soru ve önerileriniz için <a href="https://github.com/ersancetin/cumhuriyet-avukatlari/issues" target="_blank" rel="noopener">GitHub üzerinden</a>,
+    <a href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener">Instagram hesabımızdan</a>
     veya <a href="https://cumhuriyetavukatlari.com" target="_blank" rel="noopener">cumhuriyetavukatlari.com</a> aracılığıyla bize ulaşabilirsiniz.</p>
   </div>
 </main>
 
 <footer class="site-footer">
   <div class="container">
-    <div class="footer-bottom" style="border-top:none;margin-top:0;padding-top:0">
-      <span>&copy; 2026 Cumhuriyet Avukatları &middot; Meslektaş dayanışması için geliştirilmiştir &middot; <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">Açık kaynak</a></span>
-      <span><a href="index.html#araclar">Araçlara dön</a></span>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html">
+          <img src="assets/logo.png" alt="Cumhuriyet Avukatları logosu" class="brand-logo">
+          <span class="brand-text"><strong>CUMHUR&#304;YET AVUKATLARI</strong><small>PDF Araçları</small></span>
+        </a>
+        <p>Meslektaş dayanışması için geliştirildi. Ücretsiz, üyeliksiz; veri toplamaz.</p>
+        <div class="social-links">
+          <a href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener" aria-label="Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="2.5" width="19" height="19" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener" aria-label="GitHub"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.6v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.2 1.2a11 11 0 0 1 5.8 0c2.2-1.5 3.2-1.2 3.2-1.2.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .4.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z"/></svg></a>
+          <a href="https://cumhuriyetavukatlari.com" target="_blank" rel="noopener" aria-label="Web sitesi"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Dönüştürme</h4>
+        <ul>
+          <li><a href="araclar/jpg-to-pdf.html">JPG &rarr; PDF</a></li>
+          <li><a href="araclar/tiff-to-pdf.html">TIFF &rarr; PDF</a></li>
+          <li><a href="araclar/pdf-to-jpg.html">PDF &rarr; JPG / PNG</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Düzenleme</h4>
+        <ul>
+          <li><a href="araclar/pdf-birlestir.html">PDF Birleştir</a></li>
+          <li><a href="araclar/pdf-ayir.html">PDF Ayır</a></li>
+          <li><a href="araclar/pdf-sikistir.html">PDF Sıkıştır</a></li>
+          <li><a href="araclar/filigran.html">Filigran Ekle</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Bağlantılar</h4>
+        <ul>
+          <li><a href="https://cumhuriyetavukatlari.com" target="_blank" rel="noopener">cumhuriyetavukatlari.com</a></li>
+          <li><a href="https://www.instagram.com/cumhuriyetavukatlari" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://github.com/ersancetin/cumhuriyet-avukatlari" target="_blank" rel="noopener">Kaynak Kod</a></li>
+          <li><a href="gizlilik.html">Gizlilik &amp; KVKK</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Cumhuriyet Avukatları<span class="sep">&middot;</span>Açık kaynak, MIT lisansı</span>
+      <span>Dosyalarınız tarayıcınızdan çıkmaz.</span>
     </div>
   </div>
 </footer>
 
+<script src="assets/js/common.js"></script>
 </body>
 </html>
