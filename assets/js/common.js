@@ -161,54 +161,128 @@ window.CA = (function () {
     });
   }
 
-  /* ---- Dosya listesi (sıralama / silme destekli) ---- */
+  /* ---- Dosya listesi: önizlemeli kartlar, sürükle-bırak sıralama ---- */
 
-  var FILE_ICON = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5"/></svg>';
+  var FILE_ICON = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5z"/><path d="M14 3v5h5"/></svg>';
+
+  var dragSrcIndex = null;
 
   function renderFileList(files, opts, onChange) {
     var list = $('#file-list');
     if (!list) return;
+    opts = opts || {};
     list.innerHTML = '';
+    list.className = 'file-list file-grid';
+    if (!files.length) return;
+
+    if (opts.reorder && files.length > 1) {
+      var hint = document.createElement('div');
+      hint.className = 'fg-hint';
+      hint.textContent = 'Sıralamayı sürükleyerek veya ok tuşlarıyla değiştirebilirsiniz.';
+      list.appendChild(hint);
+    }
+
+    var grid = document.createElement('div');
+    grid.className = 'fg-cards';
+    list.appendChild(grid);
+
     files.forEach(function (f, i) {
-      var row = document.createElement('div');
-      row.className = 'file-row';
+      var card = document.createElement('div');
+      card.className = 'file-card';
 
-      var icon = document.createElement('span');
-      icon.className = 'f-icon';
-      icon.innerHTML = FILE_ICON;
+      if (opts.reorder && files.length > 1) {
+        card.draggable = true;
+        card.addEventListener('dragstart', function (e) {
+          dragSrcIndex = i;
+          card.classList.add('dragging');
+          e.dataTransfer.effectAllowed = 'move';
+          try { e.dataTransfer.setData('text/plain', String(i)); } catch (err) {}
+        });
+        card.addEventListener('dragend', function () {
+          dragSrcIndex = null;
+          card.classList.remove('dragging');
+        });
+        card.addEventListener('dragover', function (e) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          card.classList.add('drag-over');
+        });
+        card.addEventListener('dragleave', function () { card.classList.remove('drag-over'); });
+        card.addEventListener('drop', function (e) {
+          e.preventDefault();
+          card.classList.remove('drag-over');
+          if (dragSrcIndex === null || dragSrcIndex === i) return;
+          var item = files.splice(dragSrcIndex, 1)[0];
+          files.splice(i, 0, item);
+          dragSrcIndex = null;
+          onChange();
+        });
+      }
 
-      var name = document.createElement('span');
-      name.className = 'f-name';
+      /* sıra rozeti */
+      if (files.length > 1) {
+        var num = document.createElement('span');
+        num.className = 'fc-num';
+        num.textContent = i + 1;
+        card.appendChild(num);
+      }
+
+      /* kaldır */
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'fc-del';
+      del.title = 'Kaldır';
+      del.innerHTML = '&times;';
+      del.addEventListener('click', function (e) {
+        e.stopPropagation();
+        files.splice(i, 1);
+        onChange();
+      });
+      card.appendChild(del);
+
+      /* önizleme */
+      var thumb = document.createElement('div');
+      thumb.className = 'fc-thumb';
+      thumb.innerHTML = FILE_ICON;
+      card.appendChild(thumb);
+
+      var name = document.createElement('div');
+      name.className = 'fc-name';
       name.textContent = f.name;
       name.title = f.name;
+      card.appendChild(name);
 
-      var meta = document.createElement('span');
-      meta.className = 'f-meta';
+      var meta = document.createElement('div');
+      meta.className = 'fc-meta';
       meta.textContent = formatBytes(f.size);
+      card.appendChild(meta);
 
-      var actions = document.createElement('span');
-      actions.className = 'f-actions';
-
-      if (opts && opts.reorder) {
-        var up = iconBtn('↑', 'Yukarı taşı', i === 0, function () {
-          var t = files[i - 1]; files[i - 1] = files[i]; files[i] = t; onChange();
-        });
-        var down = iconBtn('↓', 'Aşağı taşı', i === files.length - 1, function () {
-          var t = files[i + 1]; files[i + 1] = files[i]; files[i] = t; onChange();
-        });
-        actions.appendChild(up);
-        actions.appendChild(down);
+      if (opts.thumb) {
+        Promise.resolve(opts.thumb(f)).then(function (res) {
+          if (!res || !res.url) return;
+          var img = document.createElement('img');
+          img.src = res.url;
+          img.alt = f.name;
+          thumb.innerHTML = '';
+          thumb.appendChild(img);
+          if (res.label) meta.textContent = formatBytes(f.size) + ' · ' + res.label;
+        }).catch(function () {});
       }
-      var del = iconBtn('×', 'Kaldır', false, function () {
-        files.splice(i, 1); onChange();
-      });
-      actions.appendChild(del);
 
-      row.appendChild(icon);
-      row.appendChild(name);
-      row.appendChild(meta);
-      row.appendChild(actions);
-      list.appendChild(row);
+      /* ok tuşları (dokunmatik cihazlar için) */
+      if (opts.reorder && files.length > 1) {
+        var acts = document.createElement('div');
+        acts.className = 'fc-actions';
+        acts.appendChild(iconBtn('‹', 'Öne taşı', i === 0, function () {
+          var t = files[i - 1]; files[i - 1] = files[i]; files[i] = t; onChange();
+        }));
+        acts.appendChild(iconBtn('›', 'Arkaya taşı', i === files.length - 1, function () {
+          var t = files[i + 1]; files[i + 1] = files[i]; files[i] = t; onChange();
+        }));
+        card.appendChild(acts);
+      }
+
+      grid.appendChild(card);
     });
   }
 

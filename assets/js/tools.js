@@ -87,6 +87,78 @@
     });
   }
 
+  /* ---- önizleme üreticileri (küçük resimler) ---- */
+
+  var thumbCache = new WeakMap();
+
+  function cachedThumb(file, maker) {
+    if (thumbCache.has(file)) return thumbCache.get(file);
+    var p = Promise.resolve().then(maker).catch(function () { return null; });
+    thumbCache.set(file, p);
+    return p;
+  }
+
+  function pdfThumb(file) {
+    return cachedThumb(file, function () {
+      if (!window.pdfjsLib) return null;
+      return CA.readFile(file).then(function (buf) {
+        return pdfjsLib.getDocument({
+          data: new Uint8Array(buf),
+          standardFontDataUrl: '../assets/vendor/standard_fonts/'
+        }).promise;
+      }).then(function (doc) {
+        return doc.getPage(1).then(function (page) {
+          var vp1 = page.getViewport({ scale: 1 });
+          var scale = 200 / vp1.width;
+          var vp = page.getViewport({ scale: scale });
+          var canvas = document.createElement('canvas');
+          canvas.width = Math.ceil(vp.width);
+          canvas.height = Math.ceil(vp.height);
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          return page.render({ canvasContext: ctx, viewport: vp }).promise.then(function () {
+            var url = canvas.toDataURL('image/jpeg', 0.8);
+            var pages = doc.numPages;
+            doc.destroy();
+            return { url: url, label: pages + ' sayfa' };
+          });
+        });
+      });
+    });
+  }
+
+  function imgThumb(file) {
+    return cachedThumb(file, function () {
+      return { url: URL.createObjectURL(file) };
+    });
+  }
+
+  function tiffThumb(file) {
+    return cachedThumb(file, function () {
+      if (!window.UTIF) return null;
+      return CA.readFile(file).then(function (buf) {
+        var ifds = UTIF.decode(buf);
+        if (!ifds.length) return null;
+        UTIF.decodeImage(buf, ifds[0], ifds);
+        var rgba = UTIF.toRGBA8(ifds[0]);
+        var w = ifds[0].width, h = ifds[0].height;
+        var src = document.createElement('canvas');
+        src.width = w; src.height = h;
+        var sctx = src.getContext('2d');
+        var imgData = sctx.createImageData(w, h);
+        imgData.data.set(rgba);
+        sctx.putImageData(imgData, 0, 0);
+        var scale = Math.min(1, 200 / w);
+        var out = document.createElement('canvas');
+        out.width = Math.max(1, Math.round(w * scale));
+        out.height = Math.max(1, Math.round(h * scale));
+        out.getContext('2d').drawImage(src, 0, 0, out.width, out.height);
+        return { url: out.toDataURL('image/jpeg', 0.8), label: ifds.length + ' sayfa' };
+      });
+    });
+  }
+
   function runGuard(btn, fn) {
     return function () {
       CA.clearError();
@@ -103,18 +175,21 @@
     };
   }
 
-  function singleFileState(extensions, label) {
+  function singleFileState(extensions, label, thumb) {
     var state = { file: null };
+    function rerender() {
+      CA.hideResult();
+      CA.renderFileList(state.file ? [state.file] : [], { thumb: thumb }, function () {
+        state.file = null;
+        rerender();
+        if (state.onCleared) state.onCleared();
+      });
+    }
     CA.initDropzone({
       extensions: extensions,
       onFiles: function (files) {
         state.file = files[0];
-        CA.hideResult();
-        CA.renderFileList([state.file], {}, function () {
-          state.file = null;
-          CA.renderFileList([], {}, function () {});
-          if (state.onCleared) state.onCleared();
-        });
+        rerender();
         if (state.onSelected) state.onSelected(state.file);
       }
     });
@@ -220,7 +295,7 @@
 
   /* --- PDF Birleştir --- */
   tools.merge = function () {
-    var state = multiFileState(['.pdf'], { reorder: true });
+    var state = multiFileState(['.pdf'], { reorder: true, thumb: pdfThumb });
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var files = state.require(2, 'Birleştirmek için en az 2 PDF dosyası seçin.');
@@ -257,7 +332,7 @@
 
   /* --- PDF Ayır --- */
   tools.split = function () {
-    var state = singleFileState(['.pdf'], 'Lütfen önce bir PDF dosyası seçin.');
+    var state = singleFileState(['.pdf'], 'Lütfen önce bir PDF dosyası seçin.', pdfThumb);
     var btn = $('#run-btn');
     var rangeInput = $('#ranges-input');
 
@@ -333,7 +408,7 @@
 
   /* --- Görsel (JPG/PNG/WebP) -> PDF --- */
   tools.image2pdf = function () {
-    var state = multiFileState(['.jpg', '.jpeg', '.png', '.webp'], { reorder: true });
+    var state = multiFileState(['.jpg', '.jpeg', '.png', '.webp'], { reorder: true, thumb: imgThumb });
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var files = state.require(1, 'Lütfen en az bir görsel seçin (JPG, PNG veya WebP).');
@@ -370,7 +445,7 @@
 
   /* --- TIFF -> PDF --- */
   tools.tiff2pdf = function () {
-    var state = multiFileState(['.tif', '.tiff'], { reorder: true });
+    var state = multiFileState(['.tif', '.tiff'], { reorder: true, thumb: tiffThumb });
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var files = state.require(1, 'Lütfen en az bir TIFF dosyası seçin.');
@@ -442,7 +517,7 @@
 
   /* --- PDF -> JPG/PNG --- */
   tools.pdf2img = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
 
     if (location.hash === '#png') {
@@ -493,7 +568,7 @@
 
   /* --- PDF Sıkıştır --- */
   tools.compress = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
     var PRESETS = {
       dusuk: { scale: 1.0, q: 0.5 },
@@ -536,7 +611,7 @@
 
   /* --- PDF Döndür --- */
   tools.rotate = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var file = state.require();
@@ -576,7 +651,7 @@
 
   /* --- Sayfa Sil --- */
   tools.removepages = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var file = state.require();
@@ -616,7 +691,7 @@
 
   /* --- Filigran --- */
   tools.watermark = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
     var opSlider = $('#opacity-slider');
     var opVal = $('#opacity-val');
@@ -683,7 +758,7 @@
 
   /* --- Sayfa Numarası --- */
   tools.pagenumbers = function () {
-    var state = singleFileState(['.pdf']);
+    var state = singleFileState(['.pdf'], null, pdfThumb);
     var btn = $('#run-btn');
     btn.addEventListener('click', runGuard(btn, function () {
       var file = state.require();

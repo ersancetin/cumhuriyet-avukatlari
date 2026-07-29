@@ -495,6 +495,84 @@ a:hover { color: var(--red-dark); }
 .dropzone input[type=file] { display: none; }
 
 .file-list { margin-top: 18px; display: flex; flex-direction: column; gap: 8px; }
+
+/* önizlemeli dosya kartları */
+.fg-hint { font-size: 12.5px; color: var(--muted); margin-bottom: 12px; text-align: center; }
+.fg-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+}
+.file-card {
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.file-card[draggable="true"] { cursor: grab; }
+.file-card.dragging { opacity: .45; }
+.file-card.drag-over { border-color: var(--red); box-shadow: 0 0 0 2px var(--red-soft); }
+.file-card:hover { border-color: var(--line-strong); }
+.fc-thumb {
+  height: 130px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  overflow: hidden;
+  margin-bottom: 8px;
+  color: var(--line-strong);
+  pointer-events: none;
+}
+.fc-thumb img { max-width: 100%; max-height: 100%; display: block; box-shadow: 0 1px 4px rgba(34,29,24,.12); }
+.fc-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.fc-meta { font-size: 11.5px; color: var(--muted); }
+.fc-num {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 2;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--red);
+  color: var(--white);
+  font-size: 11.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(34,29,24,.25);
+}
+.fc-del {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(34,29,24,.55);
+  color: var(--white);
+  font-size: 14px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fc-del:hover { background: var(--red); }
+.fc-actions { display: flex; justify-content: center; gap: 6px; margin-top: 8px; }
 .file-row {
   display: flex;
   align-items: center;
@@ -705,6 +783,3 @@ a:hover { color: var(--red-dark); }
   .file-row { flex-wrap: wrap; }
 }
 
-@media (max-width: 420px) {
-  .brand-text small { display: none; }
-}
