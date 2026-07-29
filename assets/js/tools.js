@@ -304,6 +304,33 @@
     });
   }
 
+  /* Çıktı boyutu ön ayarları: uzun kenar piksel sınırı + JPEG kalitesi.
+     Taramalar çoğu zaman 300 DPI gelir; UYAP/e-posta için küçültmek gerekir. */
+  var SIZE_PRESETS = {
+    kucuk: { edge: 1500, q: 0.6 },
+    dengeli: { edge: 2200, q: 0.76 },
+    yuksek: { edge: 0, q: 0.92 }
+  };
+
+  function sizePreset() {
+    return SIZE_PRESETS[CA.choiceValue('opt-size') || 'dengeli'] || SIZE_PRESETS.dengeli;
+  }
+
+  /* uzun kenarı maxEdge pikseli aşan canvas'ı küçültür (0 = dokunma) */
+  function downscaleCanvas(canvas, maxEdge) {
+    var long = Math.max(canvas.width, canvas.height);
+    if (!maxEdge || long <= maxEdge) return canvas;
+    var scale = maxEdge / long;
+    var out = document.createElement('canvas');
+    out.width = Math.max(1, Math.round(canvas.width * scale));
+    out.height = Math.max(1, Math.round(canvas.height * scale));
+    var ctx = out.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(canvas, 0, 0, out.width, out.height);
+    return out;
+  }
+
   /* TIFF yön etiketi (t274) için canvas'ı döndürür */
   function orientCanvas(canvas, o) {
     if (!o || o === 1) return canvas;
@@ -348,27 +375,35 @@
     });
   }
 
-  function embedImageFile(pdfDoc, file) {
+  function embedImageFile(pdfDoc, file, preset) {
     var name = file.name.toLowerCase();
+    preset = preset || SIZE_PRESETS.yuksek;
+
+    function viaCanvasJpeg() {
+      return fileToCanvas(file)
+        .then(function (c) { return canvasToBlob(downscaleCanvas(c, preset.edge), 'image/jpeg', preset.q); })
+        .then(function (b) { return b.arrayBuffer(); })
+        .then(function (ab) { return pdfDoc.embedJpg(ab); });
+    }
+
     return CA.readFile(file).then(function (buf) {
       if (/\.(jpg|jpeg)$/.test(name)) {
-        /* EXIF yön etiketi taşıyan fotoğraflar canvas üzerinden düzeltilerek
-           gömülür; aksi hâlde PDF'te yan/ters görünürler */
-        if (jpegOrientation(buf) !== 1) {
-          return fileToCanvas(file)
-            .then(function (c) { return canvasToBlob(c, 'image/jpeg', 0.92); })
-            .then(function (b) { return b.arrayBuffer(); })
-            .then(function (ab) { return pdfDoc.embedJpg(ab); });
-        }
-        return pdfDoc.embedJpg(buf).catch(function () {
-          /* CMYK/progresif JPG: canvas üzerinden yeniden kodla */
-          return fileToCanvas(file)
-            .then(function (c) { return canvasToBlob(c, 'image/jpeg', 0.92); })
-            .then(function (b) { return b.arrayBuffer(); })
-            .then(function (ab) { return pdfDoc.embedJpg(ab); });
-        });
+        /* Kucultme isteniyorsa veya EXIF yon etiketi varsa canvas uzerinden;
+           aksi halde orijinal byte'lar kayipsiz gomulur */
+        if (preset.edge || jpegOrientation(buf) !== 1) return viaCanvasJpeg();
+        return pdfDoc.embedJpg(buf).catch(viaCanvasJpeg); /* CMYK/progresif JPG */
       }
       if (/\.png$/.test(name)) {
+        /* PNG'ler (ekran goruntusu, belge) keskin kalsin diye PNG kalir;
+           gerekiyorsa yalnizca kucultulur */
+        if (preset.edge) {
+          return fileToCanvas(file).then(function (c) {
+            var small = downscaleCanvas(c, preset.edge);
+            return canvasToBlob(small, 'image/png')
+              .then(function (b) { return b.arrayBuffer(); })
+              .then(function (ab) { return pdfDoc.embedPng(ab); });
+          });
+        }
         return pdfDoc.embedPng(buf).catch(function () {
           return fileToCanvas(file)
             .then(function (c) { return canvasToBlob(c, 'image/png'); })
@@ -377,10 +412,7 @@
         });
       }
       /* webp vb. */
-      return fileToCanvas(file)
-        .then(function (c) { return canvasToBlob(c, 'image/png'); })
-        .then(function (b) { return b.arrayBuffer(); })
-        .then(function (ab) { return pdfDoc.embedPng(ab); });
+      return viaCanvasJpeg();
     });
   }
 
@@ -509,6 +541,7 @@
       var files = state.require(1, 'Lütfen en az bir görsel seçin (JPG, PNG veya WebP).');
       var pageMode = CA.choiceValue('opt-pagesize') || 'a4auto';
       var margin = parseFloat(CA.choiceValue('opt-margin') || '0');
+      var preset = sizePreset();
       var out;
       return PDFLib.PDFDocument.create().then(function (doc) {
         out = doc;
@@ -516,7 +549,7 @@
         files.forEach(function (f, i) {
           chain = chain.then(function () {
             CA.setProgress((i / files.length) * 90, '"' + f.name + '" ekleniyor… (' + (i + 1) + '/' + files.length + ')');
-            return embedImageFile(out, f).then(function (img) {
+            return embedImageFile(out, f, preset).then(function (img) {
               addImagePage(out, img, pageMode, margin);
             });
           });
@@ -545,7 +578,7 @@
     btn.addEventListener('click', runGuard(btn, function () {
       var files = state.require(1, 'Lütfen en az bir TIFF dosyası seçin.');
       var pageMode = CA.choiceValue('opt-pagesize') || 'auto';
-      var fmt = CA.choiceValue('opt-format') || 'jpeg';
+      var preset = sizePreset();
       var out;
       return PDFLib.PDFDocument.create().then(function (doc) {
         out = doc;
@@ -582,9 +615,10 @@
                   imgData.data.set(rgba);
                   ctx.putImageData(imgData, 0, 0);
                   canvas = orientCanvas(canvas, ifd.t274 ? ifd.t274[0] : 1);
-                  var p = fmt === 'png'
-                    ? canvasToBlob(canvas, 'image/png').then(function (b) { return b.arrayBuffer(); }).then(function (ab) { return out.embedPng(ab); })
-                    : canvasToBlob(canvas, 'image/jpeg', 0.9).then(function (b) { return b.arrayBuffer(); }).then(function (ab) { return out.embedJpg(ab); });
+                  canvas = downscaleCanvas(canvas, preset.edge);
+                  var p = canvasToBlob(canvas, 'image/jpeg', preset.q)
+                    .then(function (b) { return b.arrayBuffer(); })
+                    .then(function (ab) { return out.embedJpg(ab); });
                   return p.then(function (img) {
                     addImagePage(out, img, pageMode, 0);
                   });
