@@ -9,6 +9,10 @@
   Dosyalarınız hiçbir sunucuya yüklenmez.
 </p>
 
+<p align="center">
+  <strong>Canlı site:</strong> <a href="https://ersancetin.github.io/cumhuriyet-avukatlari/">ersancetin.github.io/cumhuriyet-avukatlari</a>
+</p>
+
 ---
 
 ## Neden bu proje?
